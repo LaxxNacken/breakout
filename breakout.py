@@ -4,6 +4,7 @@ import time
 window_width = 500
 window_height = 500
 
+global paddle_position1
 paddle_position1 = [210, 490]
 global paddle_position2
 paddle_position2 = [290, 490]
