@@ -3,21 +3,24 @@ import time
 from dataclasses import dataclass
 import random
 
+
 @dataclass
 class Block:
-    x : float 
-    y : float
-    width : float
-    height : float
-    exists : bool
+    x: float
+    y: float
+    width: float
+    height: float
+    exists: bool
 
 
 window_width = 500
 window_height = 500
 
- 
 global blocks
-blocks = [Block(10, 50, 110, 10, True), Block(10, 100, 110, 10, True), Block(10,150, 110, 10, True), Block(130, 50, 110, 10, True), Block(130, 100, 110, 10, True), Block(130, 150, 110, 10, True), Block(250, 50, 110, 10, True), Block(250, 100, 110, 10, True), Block(250, 150, 110, 10, True), Block(370, 50, 110, 10, True), Block(370, 100, 110, 10, True), Block(370, 150, 110, 10, True) ]
+blocks = [Block(10, 50, 110, 10, True), Block(130, 50, 110, 10, True), Block(250, 50, 110, 10, True),
+          Block(370, 50, 110, 10, True), Block(10, 110, 110, 10, True), Block(130, 110, 110,10, True),
+          Block(250, 110, 110, 10, True), Block(370, 110, 110, 10, True), Block(10, 170, 110, 10, True),
+          Block(130, 170, 110, 10, True), Block(250, 170, 110, 10, True), Block(370, 170, 110, 10, True)]
 global block_exist
 block_exist = True
 global win_condition
@@ -35,23 +38,20 @@ pygame.display.set_caption("Breakout!")
 window = pygame.display.set_mode((window_width, window_height))
 FPS = pygame.time.Clock()
 
+
 def block_collision():
     global blocks
     global win_condition
     for block in blocks:
         if block.exists == True:
-            if ball_position[1] == block.y + block.height and ball_position[0] > block.x and ball_position[0] <  block.x + block.width:
+            if ball_position[1] == block.y + block.height and ball_position[0] > block.x and ball_position[0] < block.x + block.width:
                 win_condition += 1
                 block.exists = False
                 ball_move[1] *= -1
             if ball_position[1] == block.y - block.height and ball_position[0] > block.x  and ball_position[0] < block.x + block.width:
-                win_condition += 1
-                block.exists = False
-                ball_move[1] *= -1
-
-def ball_collision():
-    global ball_move
-    if ball_position[1] > paddle_position1[1] - 10 and ball_position[0] > paddle_position1[0] and ball_position[0] <  paddle_position2[0]:
+               win_condition += 1
+               block.exists = False
+               ball_move[1] *= -1
 
 
 def ball_collision():
@@ -62,6 +62,7 @@ def ball_collision():
         ball_move[0] *= -1
     if ball_position[1] < 0 + 10:
         ball_move[1] *= -1
+
 
 def ball_movement():
     ball_position[0] = ball_position[0] + ball_move[0]
@@ -74,11 +75,13 @@ def draw_stuff():
     pygame.draw.circle(window, pygame.Color(255, 0, 0), (int(ball_position[0]), int(ball_position[1])), int(10))
     for block in blocks:
         if block.exists:
-            pygame.draw.rect(window, pygame.Color(255, 255, 255),( block.x, block.y, block.width, block.height))
+            pygame.draw.rect(window, pygame.Color(255, 255, 255), (block.x, block.y, block.width, block.height))
+
 
 def win():
     if win_condition == 12:
         win_message()
+
 
 def game_over():
     if ball_position[1] > 490:
@@ -95,6 +98,7 @@ def game_over_message():
     time.sleep(5)
     pygame.quit()
     exit(0)
+
 
 def win_message():
     font = pygame.font.SysFont("Comic Sans", 30)
@@ -133,10 +137,10 @@ def game_loop():
         ball_collision()
         block_collision()
         ball_movement()
-        ball_collision()
         game_over()
         draw_stuff()
         pygame.display.update()
-        FPS.tick(60)
+        FPS.tick(30)
+
 
 game_loop()
